@@ -1,0 +1,4 @@
+CREATE KEYSPACE desafio WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};
+USE desafio;
+CREATE TABLE planetas (id int PRIMARY KEY, nome text, clima text, terreno text) WITH comment='Planetas';
+INSERT INTO planetas (id, nome, clima, terreno) VALUES (0, 'Terra', 'Quente', 'Acidentado');
