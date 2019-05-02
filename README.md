@@ -12,4 +12,4 @@ As Rests do desafío:
 - Listar planetas da API do Star Wars: GET http://localhost:8080/api/planeta/swapi
 - Buscar por nome no banco de dados: GET http://localhost:8080/api/planeta?nome=<Nome>
 - Buscar por ID no banco de dados: GET http://localhost:8080/api/planeta/<Id>
-- Remover planeta: DELETE http://localhost:8080/api/planeta/<Id>
+- Remover planeta: DELETE http://localhost:8080/api/planeta/\<Id>
