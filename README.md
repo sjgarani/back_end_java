@@ -1,5 +1,4 @@
-# back_end_java
-Desafio Técnico: Back-end JAVA - Sandro José Garani
+# Desafio Técnico: Back-end JAVA - Sandro José Garani
 
 Para montar o banco basta rodar o arquivo desafio.db
 
