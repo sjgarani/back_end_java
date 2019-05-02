@@ -10,6 +10,6 @@ As Rests do desafío:
 - Adicionar um planeta (com nome, clima e terreno): POST http://localhost:8080/api/planeta
 - Listar planetas do banco de dados: GET http://localhost:8080/api/planeta
 - Listar planetas da API do Star Wars: GET http://localhost:8080/api/planeta/swapi
-- Buscar por nome no banco de dados: GET http://localhost:8080/api/planeta?nome=<<Nome>>
-- Buscar por ID no banco de dados: GET http://localhost:8080/api/planeta/<<Id>>
-- Remover planeta: DELETE http://localhost:8080/api/planeta/<<Id>>
+- Buscar por nome no banco de dados: GET http://localhost:8080/api/planeta?nome=NOME
+- Buscar por ID no banco de dados: GET http://localhost:8080/api/planeta/ID
+- Remover planeta: DELETE http://localhost:8080/api/planeta/ID
