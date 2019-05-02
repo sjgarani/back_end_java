@@ -1,9 +1,12 @@
 package ame.desafio.star.wars.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
+import com.datastax.driver.mapping.annotations.Transient;
 
 @Table(keyspace = "desafio", name = "planetas")
 public class Planeta {
@@ -15,7 +18,8 @@ public class Planeta {
 	private String nome;
 	private String clima;
 	private String terreno;
-	//private List<Aparicao> aparicoes;
+	@Transient
+	private List<Aparicao> aparicoes = new ArrayList<Aparicao>();
 	
 	public Planeta() {	
 		id = COUNTER.getAndIncrement();
@@ -62,5 +66,15 @@ public class Planeta {
 	public void setTerreno(String terreno) {
 		this.terreno = terreno;
 	}
+
+	public List<Aparicao> getAparicoes() {
+		return aparicoes;
+	}
+
+	public void setAparicoes(List<Aparicao> aparicoes) {
+		this.aparicoes = aparicoes;
+	}
+
+
 
 }

@@ -1,33 +1,26 @@
 package ame.desafio.star.wars;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import ame.desafio.star.wars.entity.Planeta;
 import io.vertx.reactivex.core.AbstractVerticle;
-import io.vertx.reactivex.core.MultiMap;
 import io.vertx.reactivex.core.buffer.Buffer;
 import io.vertx.reactivex.core.http.HttpServerResponse;
 import io.vertx.reactivex.ext.web.Router;
 import io.vertx.reactivex.ext.web.RoutingContext;
-import io.vertx.reactivex.ext.web.client.HttpRequest;
 import io.vertx.reactivex.ext.web.client.HttpResponse;
 import io.vertx.reactivex.ext.web.client.WebClient;
-import io.vertx.reactivex.ext.web.codec.BodyCodec;
 import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import io.vertx.reactivex.cassandra.CassandraClient;
 import io.vertx.reactivex.cassandra.CassandraRowStream;
 import io.vertx.reactivex.cassandra.Mapper;
 import io.vertx.reactivex.cassandra.MappingManager;
-import io.reactivex.Single;
 import io.vertx.cassandra.CassandraClientOptions;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.WebClientOptions;
 
 public class StarWarsService extends AbstractVerticle {
@@ -43,9 +36,9 @@ public class StarWarsService extends AbstractVerticle {
 
 		Router router = Router.router(vertx);
 		router.route("/api/planeta*").handler(BodyHandler.create());
-		router.get("/api/planetas").handler(this::getPlanetas);
+		router.get("/api/planeta").handler(this::getPlanetas);
 		router.post("/api/planeta").handler(this::addPlaneta);
-		router.get("/api/planetas/swapi").handler(this::getPlanetasFromAPI);
+		router.get("/api/planeta/swapi").handler(this::getPlanetasFromAPI);
 		router.get("/api/planeta/:id").handler(this::getPlanetaById);
 		router.delete("/api/planeta/:id").handler(this::deletePlaneta);
 
@@ -106,15 +99,6 @@ public class StarWarsService extends AbstractVerticle {
 				System.out.println("Something went wrong " + ar.cause().getMessage());
 			}
 		});
-		// Single<HttpResponse<JsonObject>> single =
-		// client.get(443,"https://swapi.co","/api/planets")
-		// .putHeader(HttpHeaders.ACCEPT.toString(),
-		// "application/json").as(BodyCodec.jsonObject())
-		// .rxSend(); .as(BodyCodec.jsonObject()).rxSend();
-		// single.subscribe(resp -> {
-		// rc.response().putHeader(HttpHeaders.CONTENT_TYPE,
-		// "application/json").end(resp.body().encode());
-		// });
 	}
 
 	private void getPlanetaById(RoutingContext rc) {
@@ -127,8 +111,14 @@ public class StarWarsService extends AbstractVerticle {
 		Mapper<Planeta> mapper = mappingManager.mapper(Planeta.class);
 
 		mapper.get(Collections.singletonList(id), handler -> {
-			response.putHeader("content-type", "application/json; charset=utf-8")
+
+			if (handler.result() == null) {
+				response.putHeader("content-type", "application/json; charset=utf-8")
+					.end();
+			} else {
+				response.putHeader("content-type", "application/json; charset=utf-8")
 					.end(Json.encodePrettily(handler.result()));
+			}
 		});
 
 	}
@@ -143,8 +133,7 @@ public class StarWarsService extends AbstractVerticle {
 		Mapper<Planeta> mapper = mappingManager.mapper(Planeta.class);
 
 		mapper.delete(Collections.singletonList(id), handler -> {
-			response.putHeader("content-type", "application/json; charset=utf-8")
-					.end(Json.encodePrettily(handler.result()));
+			response.setStatusCode(204).end();
 		});
 
 	}
